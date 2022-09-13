@@ -1,0 +1,7 @@
+name: dope_project-env
+channels:
+  - conda-forge
+dependencies:
+  - numpy=1.23
+  - pandas=1.4
+  - python=3.10
