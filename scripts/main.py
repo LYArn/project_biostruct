@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from math import sqrt
 
 class Structure:
     def __init__(self):
@@ -88,8 +89,9 @@ class Residue(Structure):
 
 if __name__ == "__main__":
     DOPE = pd.read_csv('docs/dope.par.txt', ' ', header=None)
-
-    with open("docs/1gcn.pdb", 'r') as file:
+    print('Choose .pdb file :')
+    f = input()
+    with open(f, 'r') as file:
         prot = Residue() #Create instance of class Residues
         prot.pars(file) #Parse glucagon .pdb file
     
