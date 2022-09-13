@@ -87,9 +87,9 @@ class Residue(Structure):
 
 
 if __name__ == "__main__":
-    DOPE = pd.read_csv('dope.par.txt', ' ', header=None)
+    DOPE = pd.read_csv('docs/dope.par.txt', ' ', header=None)
 
-    with open("1gcn.pdb", 'r') as file:
+    with open("docs/1gcn.pdb", 'r') as file:
         prot = Residue() #Create instance of class Residues
         prot.pars(file) #Parse glucagon .pdb file
     
