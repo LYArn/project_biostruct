@@ -1,2 +1,1 @@
-File name : 1gcn.pdb
-Sum of DOPE values for 1gcn.pdb = -11.399999999999977
+
