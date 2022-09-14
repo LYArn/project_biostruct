@@ -1,7 +1,7 @@
 # Assessment of the quality of protein's 3D model
 ## General information
 
-The script of this project use a PDB extension file and a DataFrame containing Discrete Optimized Protein Energy (DOPE), statistical potential values. These values are precalculated and are downloaded from this [link](www.dsimb.inserm.fr/~gelly/data/dope.par).
+The script of this project use a PDB extension file and a DataFrame containing Discrete Optimized Protein Energy (DOPE), statistical potential values. These values are precalculated and are downloaded from this [link](http://www.dsimb.inserm.fr/~gelly/data/dope.par).
 
 By inputting a PDB file, we calculate the sum of DOPE values related to the interaction of each amino acid between each other. We assume these interactions are only between their alpha carbon.
 
