@@ -5,7 +5,7 @@ The script of this project use a PDB extension file and a DataFrame containing D
 
 By inputting a PDB file, we calculate the sum of DOPE values related to the interaction of each amino acid between each other. We assume these interactions are only between their alpha carbon. 
 
-By using the script, we obtain a score by comparing the sum of DOPE values with the z-score of randomized sequences (shuffled original sequence).
+As results, we obtain a score by comparing the sum of DOPE values with the z-score of randomized sequences (shuffled original sequence). After comparison, the higher (or lower, in negative value) the score is, the more likely this 3D conformation is to exist *in vivo*.
 
 
 ## Setting environment
