@@ -140,6 +140,7 @@ if __name__ == "__main__":
     #Save results in a txt file
     with open('results/compil_results.txt', 'w') as result_file:
         result_file.write(f"File name : {args.filename}\n")
+        result_file.write(f"Number of CA in this sequence : {len(prot.atname)}\n")
         result_file.write(f"Sum of DOPE values for original sequence = {round(prot_total, 2)}\n")
         result_file.write(f"List of ref values from shuffled sequences : {rand_total}\n")
         result_file.write(f"Mean and standard deviation calculated from randomized sequence ({times}x) = {round(mean, 2)}, {round(standard_deviation, 2)}\n")
