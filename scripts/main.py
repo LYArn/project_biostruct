@@ -1,15 +1,18 @@
 import numpy as np
 import pandas as pd
+import random
+import copy
 from math import sqrt
+
 
 class Structure:
     def __init__(self):
         self.atname = []
         self.atcoord = [] 
 
-    def pars(self, file):
+    def get_coord(self, file):
         """ Parsing of .pdb file
-            Return CA residues' coordinates and names"""
+            Return residues CA's coordinates and names"""
         x = []
         y = []
         z = []
@@ -58,7 +61,6 @@ class Residue(Structure):
         self.asso_name_dist = {}
         self.asso_name_ang = {}
 
-        self.distance()
         self.init_dope(DOPE)
         #Select row of interest in value_dope for each experimental distance
         for i in range(len(self.ca_name)):
@@ -86,15 +88,52 @@ class Residue(Structure):
         for i in self.asso_name_index.keys():
             self.result[i] = self.value_dope.loc[self.value_dope.index[self.asso_name_index[i]], self.asso_name_ang[i]]
 
+def randomize_value(rand, rand_total):
+    #Randomize list of CA to obtain a ref value to compare
+    temp = list(zip(rand.atname, rand.atcoord))
+    random.shuffle(temp)
+    rand.atname, rand.atcoord = zip(*temp)
+    rand.atname, rand.atcoord = list(rand.atname), list(rand.atcoord)
+    rand.distance()
+    rand.potential_score()
+    rand_total.append(sum(rand.result.values()))
+
+
 
 if __name__ == "__main__":
-    DOPE = pd.read_csv('docs/dope.par.txt', ' ', header=None)
-    print('Choose .pdb file :')
-    f = input()
-    with open(f, 'r') as file:
+    DOPE = pd.read_csv('data/dope.par.txt', ' ', header=None)
+    print("Input .pdb file's name :")
+
+    with open(f'data/1gcn.pdb', 'r') as file:
         prot = Residue() #Create instance of class Residues
-        prot.pars(file) #Parse glucagon .pdb file
+        prot.get_coord(file) #Parse glucagon .pdb file
     
-    prot.potential_score() #Associate pdf value with CA pair distances
-    prot_total = sum(prot.result.values())
-    print(f'Total energy score is {prot_total}')
+        prot.distance() #Calculate distance between each CA pair
+        prot.potential_score() #Associate pdf value with CA pair distances
+        prot_total = sum(prot.result.values())
+        
+        rand = copy.deepcopy(prot)
+        rand_total = []
+        times = 10
+        for i in range(times):
+            randomize_value(rand, rand_total)
+
+    #Z-score
+    mean = sum(rand_total) / len(rand_total)
+    print(rand_total)
+    diff = [(value - mean)**2 for value in rand_total]
+    sum_of_diff = sum(diff)
+    standard_deviation = (sum_of_diff / (len(rand_total) - 1 )) ** 0.5
+    print(mean, standard_deviation)
+
+    #Statistical comparison
+    score = (mean - prot_total)/standard_deviation
+    print(score)
+
+    # #Save results in a txt file
+    with open('results/compil_results.txt', 'w') as result_file:
+        result_file.write(f"File name : {f}\n")
+        result_file.write(f"Sum of DOPE values for original sequence = {prot_total}\n")
+        result_file.write(f"Mean and standard deviation calculated from randomized sequence ({times}x) = {mean}, {standard_deviation}\n")
+        result_file.write(f"The score of the original sequence compared to randomized sequences : {score}\n")
+        print('compil_results updated !')
